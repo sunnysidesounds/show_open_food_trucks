@@ -3,6 +3,8 @@
 import requests
 import datetime
 import calendar
+import math
+import sys
 from tabulate import tabulate
 
 
@@ -82,7 +84,7 @@ class FoodTruckFinder(object):
         :return:
         """
         if len(self.open_food_trucks) > self.truck_per_page:
-            pages = int(self.truck_per_page // len(self.open_food_trucks)) + 1
+            pages = math.ceil(len(self.open_food_trucks) / self.truck_per_page) + 1
         else:
             pages = 2
         return pages
@@ -101,17 +103,15 @@ class FoodTruckFinder(object):
         :return:
         """
         # TODO: Need to improve time complexity O(n2)
-        for page in range(1, self.get_total_pages()):
-            truck_list = []
-            for index, truck in enumerate(self.open_food_trucks):
-                truck_attribute_list = list()
-                truck_attribute_list.append(truck.applicant)
-                truck_attribute_list.append(truck.location)
-                truck_attribute_list.append("{start} - {end}".format(start=truck.starttime, end=truck.endtime))
-                truck_list.append(truck_attribute_list)
-                if index == self.truck_per_page:
-                    break
-            self.open_food_trucks_pagination[page] = truck_list
+        pages = [self.open_food_trucks[x:x+self.truck_per_page] for x in range(0, len(self.open_food_trucks), self.truck_per_page)]
+
+        for i in range(len(pages)):
+            truck_list = pages[i]
+            self.open_food_trucks_pagination[i + 1] = []
+            for j in range(len(truck_list)):
+                truck = truck_list[j]
+                self.open_food_trucks_pagination[i + 1].append([truck.applicant, truck.location, "{start} - {end}".format(start=truck.starttime, end=truck.endtime)])
+
 
     def __diplay_food_trucks_list(self, page):
         """
@@ -166,16 +166,16 @@ if __name__ == '__main__':
     print("###############################################\n")
 
     # By default display first page
-    food_trucks.get_open_food_trucks()
+    food_trucks.get_open_food_trucks(1)
     # If more than 1 page create a loop that prompts for each page, until you hit enter to quit
     if food_trucks.get_total_pages() - 1 > 1:
         while True:
             try:
                 page_number = int(input("Enter page number?, [ENTER] to quit "))
-                if page_number > 0:
-
+                if not page_number or page_number < 0:
                     break
                 food_trucks.get_open_food_trucks(page_number)
 
             except Exception as e:
-                print(e)
+                print("Exiting program")
+                break
