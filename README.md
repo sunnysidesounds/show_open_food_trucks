@@ -2,6 +2,9 @@
 Simple command-line program that will print out a list of food trucks, given a source of food truck data from the
 San Francisco government’s API.
 
+![alt screenshot](https://github.com/sunnysidesounds/show_open_food_trucks/blob/master/example_screenshot_results.png?raw=true)
+
+
 ## Setup & Install Dependencies For Program
 1. Install virtualenv using `pip install virtualenv`
 2. Pull down from git or unzip the show_open_food_trucks/ service source code.
@@ -16,7 +19,7 @@ San Francisco government’s API.
 
 ## Assumptions / Additional Details:
 - Using the ***applicant*** key/value response to sort by alphabetically
-    - I do an in-order sort. So as we are parsing the request we build a list of FoodTruck object they are sorted. 
+    - I do an in-order sort. So as we are parsing the request we build a list of FoodTruck object they are sorted.
 - Using the ***start24*** and ***end24*** key/value response to determine if a food truck is open
     - Get current time, than compare with these 2 values to see if they are between them
 - As it displays NAME and ADDRESS, I added HOURS that show what hours the food truck is open
