@@ -1,4 +1,4 @@
-# SHOW OPEN FOOD TRUCKS
+# OPEN FOOD TRUCKS FINDER
 Simple command-line program that will print out a list of food trucks, given a source of food truck data from the
 San Francisco government’s API.
 
